@@ -29,7 +29,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
-import org.tomdroid.ui.Tomdroid;
+import org.tomdroid.reborn.ui.Tomdroid;
 
 public class AnonymousConnection extends WebConnection {
 
@@ -49,14 +49,8 @@ public class AnonymousConnection extends WebConnection {
 		// Prepare a request object
 		HttpPut httpPut = new HttpPut(uri);
 		
-		try {
-			// The default http content charset is ISO-8859-1, JSON requires UTF-8
-			httpPut.setEntity(new StringEntity(data, "UTF-8"));
-		} catch (UnsupportedEncodingException e1) {
-			e1.printStackTrace();
-			return null;
-		}
-		
+		httpPut.setEntity(new StringEntity(data, "UTF-8"));
+
 		httpPut.setHeader("Content-Type", "application/json");
 		httpPut.addHeader("X-Tomboy-Client", Tomdroid.HTTP_HEADER);
 		HttpResponse response = execute(httpPut);

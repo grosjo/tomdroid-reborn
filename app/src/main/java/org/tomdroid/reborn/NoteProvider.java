@@ -53,10 +53,10 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.Html;
 import android.text.TextUtils;
-import org.tomdroid.ui.Tomdroid;
-import org.tomdroid.util.Preferences;
-import org.tomdroid.util.TLog;
-import org.tomdroid.xml.XmlUtils;
+import org.tomdroid.reborn.ui.Tomdroid;
+import org.tomdroid.reborn.util.Preferences;
+import org.tomdroid.reborn.util.TLog;
+import org.tomdroid.reborn.xml.XmlUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

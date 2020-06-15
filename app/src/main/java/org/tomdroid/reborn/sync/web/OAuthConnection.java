@@ -250,14 +250,8 @@ public class OAuthConnection extends WebConnection {
 		// Prepare a request object
 		HttpPut httpPut = new HttpPut(uri);
 		
-		try {
-			// The default http content charset is ISO-8859-1, JSON requires UTF-8
-			httpPut.setEntity(new StringEntity(data, "UTF-8"));
-		} catch (UnsupportedEncodingException e1) {
-			e1.printStackTrace();
-			return null;
-		}
-		
+		httpPut.setEntity(new StringEntity(data, "UTF-8"));
+
 		httpPut.setHeader("Content-Type", "application/json");
 		httpPut.addHeader("X-Tomboy-Client", Tomdroid.HTTP_HEADER);
 		sign(httpPut);
