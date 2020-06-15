@@ -33,12 +33,12 @@ import android.net.Uri;
 import android.text.Html;
 import android.widget.ListAdapter;
 
-import org.tomdroid.ui.Tomdroid;
-import org.tomdroid.util.NoteListCursorAdapter;
-import org.tomdroid.util.Preferences;
-import org.tomdroid.util.TLog;
-import org.tomdroid.util.Time;
-import org.tomdroid.xml.XmlUtils;
+import org.tomdroid.reborn.ui.Tomdroid;
+import org.tomdroid.reborn.util.NoteListCursorAdapter;
+import org.tomdroid.reborn.util.Preferences;
+import org.tomdroid.reborn.util.TLog;
+import org.tomdroid.reborn.util.Time;
+import org.tomdroid.reborn.xml.XmlUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;

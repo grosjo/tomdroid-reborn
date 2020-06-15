@@ -28,8 +28,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.tomdroid.ui.Tomdroid;
-import org.tomdroid.util.TLog;
+import org.tomdroid.reborn.ui.Tomdroid;
+import org.tomdroid.reborn.util.TLog;
 
 import java.io.BufferedReader;
 import java.io.IOException;
