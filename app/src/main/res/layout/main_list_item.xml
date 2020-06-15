@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ Tomdroid
+ Tomboy on Android
+ http://www.launchpad.net/tomdroid
+
+ Copyright 2008, 2009 Olivier Bilodeau <olivier@bottomlesspit.org>
+ 
+ This file is part of Tomdroid.
+ 
+ Tomdroid is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ 
+ Tomdroid is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ 
+ You should have received a copy of the GNU General Public License
+ along with Tomdroid.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="10dip"
+    android:paddingBottom="10dip"
+    android:paddingLeft="5dip"
+    android:gravity="center_vertical"
+	>
+	
+	<ImageView
+		android:id="@+id/list_icon"
+		android:layout_width="36dip"
+		android:layout_height="36dip"
+		android:src="@drawable/ic_shortcut"
+		android:layout_alignParentLeft="true"
+		android:layout_centerVertical="true"
+	/>
+
+    <TextView android:id="@+id/note_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="42dip"
+		android:textStyle="bold"
+		android:textSize="18dp"
+		android:paddingRight="23dp"
+	/>
+
+    <TextView android:id="@+id/note_date"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="42dip"
+        android:layout_below="@+id/note_title"
+		android:textSize="14dp"
+		android:paddingRight="23dp"
+    />
+	<View
+		android:id="@+id/triangle"
+		android:layout_width="13dip"
+		android:layout_height="36dip"
+		android:layout_alignParentRight="true"
+		android:layout_gravity="center_vertical"
+		android:layout_centerVertical="true"
+	/>
+</RelativeLayout>
