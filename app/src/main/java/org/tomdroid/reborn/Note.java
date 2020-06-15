@@ -30,11 +30,9 @@ import android.text.TextUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.tomdroid.reborn.util.Time;
-import org.tomdroid.reborn.xml.NoteContentBuilder;
-import org.tomdroid.reborn.xml.XmlUtils;
 
 import java.io.Serializable;
+
 public class Note implements Serializable {
 
 	/**
@@ -72,7 +70,7 @@ public class Note implements Serializable {
 
 	// Unused members (for SD Card)
 	
-	public String createDate = new Time().formatTomboy();
+	public String createDate = new TTime().formatTomboy();
 	public int cursorPos = 0;
 	public int height = 0;
 	public int width = 0;
@@ -160,14 +158,14 @@ public class Note implements Serializable {
 		this.title = title;
 	}
 
-	public Time getLastChangeDate() {
-		Time time = new Time();
+	public TTime getLastChangeDate() {
+		TTime time = new TTime();
 		time.parseTomboy(lastChangeDate);
 		return time;
 	}
 	
-	public Time getCreateDate() {
-		Time time = new Time();
+	public TTime getCreateDate() {
+		TTime time = new TTime();
 		// quick and dirty bugfix for synchronisation with Rainy server (have to send create Date)
 		//TODO: we should store the createDate in the note!
 		time.set(946681200000L);
@@ -176,12 +174,12 @@ public class Note implements Serializable {
 	
 	// sets change date to now
 	public void setLastChangeDate() {
-		Time now = new Time();
+		TTime now = new TTime();
 		now.setToNow();
 		setLastChangeDate(now);
 	}
 	
-	public void setLastChangeDate(Time lastChangeDateTime) {
+	public void setLastChangeDate(TTime lastChangeDateTime) {
 		this.lastChangeDate = lastChangeDateTime.formatTomboy();
 	}
 	

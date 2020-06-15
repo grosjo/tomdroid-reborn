@@ -27,23 +27,13 @@ package org.tomdroid.reborn;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.text.Html;
 import android.widget.ListAdapter;
 
-import org.tomdroid.reborn.ui.Tomdroid;
-import org.tomdroid.reborn.util.NoteListCursorAdapter;
-import org.tomdroid.reborn.util.Preferences;
-import org.tomdroid.reborn.util.TLog;
-import org.tomdroid.reborn.util.Time;
-import org.tomdroid.reborn.xml.XmlUtils;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.*;
+import java.util.regex.*;
 
 @SuppressWarnings("deprecation")
 public class NoteManager {
@@ -244,7 +234,7 @@ public class NoteManager {
 	public static void undeleteNote(Activity activity, Note note)
 	{
 		note.removeTag("system:deleted");
-		Time now = new Time();
+		TTime now = new TTime();
 		now.setToNow();
 		note.setLastChangeDate(now);
 		putNote(activity,note);
@@ -254,7 +244,7 @@ public class NoteManager {
 	public static void deleteNote(Activity activity, Note note)
 	{
 		note.addTag("system:deleted");
-		Time now = new Time();
+		TTime now = new TTime();
 		now.setToNow();
 		note.setLastChangeDate(now);
 		putNote(activity,note);
