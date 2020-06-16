@@ -7,11 +7,11 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 
-public class lNavButtonAdapter extends BaseAdapter {
+public class NavButtonAdapter extends BaseAdapter {
     private Context mContext;
 	private String[] directories;
     
-    public lNavButtonAdapter(Context c, String[] directories) {
+    public NavButtonAdapter(Context c, String[] directories) {
     	this.directories = directories;
         mContext = c;
     }

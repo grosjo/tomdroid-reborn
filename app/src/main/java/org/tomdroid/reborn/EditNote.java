@@ -467,7 +467,8 @@ public class EditNote extends ActionBarActivity {
 		TLog.v(TAG, "saving note");
 		
 		boolean updated = updateNoteContent(xmlOn);
-		if(!updated) {
+		if(!updated)
+		{
 			Toast.makeText(this, getString(R.string.messageErrorParsingXML), Toast.LENGTH_SHORT).show();
 			return;
 		}

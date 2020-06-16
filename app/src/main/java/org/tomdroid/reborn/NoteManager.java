@@ -32,6 +32,8 @@ import android.net.Uri;
 import android.text.Html;
 import android.widget.ListAdapter;
 
+import androidx.loader.content.CursorLoader;
+
 import java.util.*;
 import java.util.regex.*;
 
@@ -112,10 +114,22 @@ public class NoteManager {
 	public static Note getNote(Activity activity, Uri uri) {
 		
 		Note note = null;
-		
-		// can we find a matching note?
-		Cursor cursor = activity.managedQuery(uri, FULL_PROJECTION, null, null, null);
-		// cursor must not be null and must return more than 0 entry 
+
+		String selection = null;
+		String[] selectionArgs = null;
+		String sortOrder = null;
+
+		CursorLoader cursorLoader = new CursorLoader(
+				activity,
+				uri,
+				FULL_PROJECTION,
+				selection,
+				selectionArgs,
+				sortOrder);
+
+		Cursor cursor = cursorLoader.loadInBackground();
+
+		// cursor must not be null and must return more than 0 entry
 		if (!(cursor == null || cursor.getCount() == 0)) {
 			
 			// create the note from the cursor
@@ -296,11 +310,22 @@ public class NoteManager {
 	public static Cursor getAllNotes(Activity activity, Boolean includeNotebookTemplates) {
 		// get a cursor representing all notes from the NoteProvider
 		Uri notes = Tomdroid.CONTENT_URI;
-		String where = "("+Note.TAGS + " NOT LIKE '%" + "system:deleted" + "%')";
+		String where = "(" + Note.TAGS + " NOT LIKE '%" + "system:deleted" + "%')";
 		if (!includeNotebookTemplates) {
 			where += " AND (" + Note.TAGS + " NOT LIKE '%" + "system:template" + "%')";
 		}
-		return activity.managedQuery(notes, LIST_PROJECTION, where, null, sortOrder);		
+
+		String[] selectionArgs = null;
+
+		CursorLoader cursorLoader = new CursorLoader(
+				activity,
+				notes,
+				LIST_PROJECTION,
+				where,
+				selectionArgs,
+				sortOrder);
+
+		return cursorLoader.loadInBackground();
 	}
 
 	// this function gets all non-deleted notes as notes in an array
@@ -313,7 +338,19 @@ public class NoteManager {
 			where += " AND (" + Note.TAGS + " NOT LIKE '%" + "system:template" + "%')";
 		}
 		orderBy = Note.MODIFIED_DATE + " DESC";
-		Cursor cursor = activity.managedQuery(uri, FULL_PROJECTION, where, null, orderBy);
+
+		String[] selectionArgs = null;
+
+		CursorLoader cursorLoader = new CursorLoader(
+					activity,
+					uri,
+					FULL_PROJECTION,
+					where,
+					selectionArgs,
+					orderBy);
+
+		Cursor cursor = cursorLoader.loadInBackground();
+
 		if (cursor == null || cursor.getCount() == 0) {
 			TLog.d(TAG, "no notes in cursor");
 			return null;
@@ -414,25 +451,56 @@ public class NoteManager {
 	// gets the titles of the notes present in the db, used in ViewNote.buildLinkifyPattern()
 	public static Cursor getTitles(Activity activity) {
 		
-		String where = Note.TAGS + " NOT LIKE '%system:deleted%'";
-		// get a cursor containing the notes titles
-		return activity.managedQuery(Tomdroid.CONTENT_URI, TITLE_PROJECTION, where, null, null);
+		String selection = Note.TAGS + " NOT LIKE '%system:deleted%'";
+		String[] selectionArgs = null;
+		String sortOrder = null;
+
+		CursorLoader cursorLoader = new CursorLoader(
+				activity,
+				Tomdroid.CONTENT_URI,
+				TITLE_PROJECTION,
+				selection,
+				selectionArgs,
+				sortOrder);
+
+		return cursorLoader.loadInBackground();
 	}
 	
 	// gets the ids of the notes present in the db, used in SyncService.deleteNotes()
-	public static Cursor getGuids(Activity activity) {
-		
-		// get a cursor containing the notes guids
-		return activity.managedQuery(Tomdroid.CONTENT_URI, GUID_PROJECTION, null, null, null);
+	public static Cursor getGuids(Activity activity)
+	{
+		String selection = null;
+		String[] selectionArgs = null;
+		String sortOrder = null;
+
+		CursorLoader cursorLoader = new CursorLoader(
+				activity,
+				Tomdroid.CONTENT_URI,
+				GUID_PROJECTION,
+				selection,
+				selectionArgs,
+				sortOrder);
+
+		return cursorLoader.loadInBackground();
 	}
 	
 	public static int getNoteId(Activity activity, String title) {
 		
 		int id = 0;
 		
-		// get the notes ids
-		String[] whereArgs = { title.toUpperCase() };
-		Cursor cursor = activity.managedQuery(Tomdroid.CONTENT_URI, ID_PROJECTION, "UPPER("+Note.TITLE+")=?", whereArgs, null);
+		String selection = "UPPER("+Note.TITLE+")=?";
+		String[] selectionArgs = { title.toUpperCase() };
+		String sortOrder = null;
+
+		CursorLoader cursorLoader = new CursorLoader(
+				activity,
+				Tomdroid.CONTENT_URI,
+				ID_PROJECTION,
+				selection,
+				selectionArgs,
+				sortOrder);
+
+		Cursor cursor = cursorLoader.loadInBackground();
 		
 		// cursor must not be null and must return more than 0 entry 
 		if (!(cursor == null || cursor.getCount() == 0)) {
@@ -454,10 +522,21 @@ public class NoteManager {
 		int id = 0;
 		
 		// get the notes ids
-		String[] whereArgs = { guid };
-		Cursor cursor = activity.managedQuery(Tomdroid.CONTENT_URI, ID_PROJECTION, Note.GUID+"=?", whereArgs, null);
-		
-		// cursor must not be null and must return more than 0 entry 
+		String selection = Note.GUID+"=?";
+		String[] selectionArgs = { guid };
+		String sortOrder = null;
+
+		CursorLoader cursorLoader = new CursorLoader(
+				activity,
+				Tomdroid.CONTENT_URI,
+				ID_PROJECTION,
+				selection,
+				selectionArgs,
+				sortOrder);
+
+		Cursor cursor = cursorLoader.loadInBackground();
+
+		// cursor must not be null and must return more than 0 entry
 		if (!(cursor == null || cursor.getCount() == 0)) {
 			
 			cursor.moveToFirst();
@@ -499,10 +578,21 @@ public class NoteManager {
 	 * get a guid list of notes that are newer than latest sync date 
 	 * @param activity
 	 */
-	public static Cursor getNewNotes(Activity activity) {
-		Cursor cursor = activity.managedQuery(Tomdroid.CONTENT_URI, DATE_PROJECTION, "strftime('%s', "+Note.MODIFIED_DATE+") > strftime('%s', '"+Preferences.getString(Preferences.Key.LATEST_SYNC_DATE)+"')", null, null);	
-				
-		return cursor;
+	public static Cursor getNewNotes(Activity activity)
+	{
+		String selection = "strftime('%s', "+Note.MODIFIED_DATE+") > strftime('%s', '"+Preferences.getString(Preferences.Key.LATEST_SYNC_DATE)+"')";
+		String[] selectionArgs = null;
+		String sortOrder = null;
+
+		CursorLoader cursorLoader = new CursorLoader(
+				activity,
+				Tomdroid.CONTENT_URI,
+				DATE_PROJECTION,
+				selection,
+				selectionArgs,
+				sortOrder);
+
+		return cursorLoader.loadInBackground();
 	}
 
 	/**
