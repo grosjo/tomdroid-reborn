@@ -43,7 +43,7 @@
 	<!-- placeholder-1 is the apps name -->
 	<string name="titleAbout">About <xliff:g id="appname">%1$s</xliff:g></string>
 	<!-- First start alert box, placeholders are linebreaks only -->
-	<string name="strWelcome">Welcome to Tomdroid Reborn.<xliff:g id="linebreak">\n\n</xliff:g>Please note that this is beta quality software and that it contains known problems.<xliff:g id="linebreak">\n\n</xliff:g>We are well aware of these issues and intend to work on them quickly but I also wanted to get something out and tested as quickly as possible.<xliff:g id="linebreak">\n\n</xliff:g>If you would like to contribute, help at all levels would be appreciated. Hop on board on launchpad.net/tomdroid and contact us!<xliff:g id="linebreak">\n</xliff:g></string>
+	<string name="strWelcome">Welcome to Tomdroid Reborn.<xliff:g id="linebreak">\n\n</xliff:g>This is a fork from Olivier Bilodeau work.<xliff:g id="linebreak">\n\n</xliff:g>Please submit issues on https://github.com/grosjo/tomdroid-reborn/issues.<xliff:g id="linebreak">\n\n</xliff:g>Please also check Tomboy Reborn for the desktop version (https://github.com/grosjo/tomboy-reborn/ or Debian/Arch packages.<xliff:g id="linebreak">\n</xliff:g></string>
 	<!-- placeholder-1 is a description of the app, placeholder-2 is the authors name and placeholder-3 the version number -->
 	<string name="strAbout"><xliff:g id="description" example="Note taking app">%1$s\n\n</xliff:g>Author<xliff:g id="author" example=": Max Example">: %2$s\n</xliff:g>Version<xliff:g id="version" example="0.7.4">: %3$s\n</xliff:g>Licensed under the GPLv3</string>
 	

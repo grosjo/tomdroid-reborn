@@ -359,7 +359,7 @@ public class Tomdroid extends ActionBarListActivity {
         else
         	inflater.inflate(R.menu.main_longclick, menu);
         
-	    menu.setHeaderTitle(getString(R.string.noteOptions));
+	    //menu.setHeaderTitle(getString(R.string.noteOptions));
 		super.onCreateContextMenu(menu, v, menuInfo);
 	}
 

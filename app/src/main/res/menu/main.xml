@@ -21,55 +21,66 @@
  You should have received a copy of the GNU General Public License
  along with Tomdroid.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:android="http://schemas.android.com/apk/res/android">
 
    	<item 
 		android:icon="@android:drawable/ic_menu_add"
 		android:title="@string/menuNew"
-       	android:showAsAction="always"
-        android:orderInCategory="2"
-		android:id="@+id/menuNew"/>
-   	<item 
+		android:orderInCategory="2"
+		android:id="@+id/menuNew"
+		app:showAsAction="always" />
+	<item android:id="@+id/menuEdit"
+		android:icon="@android:drawable/ic_menu_edit"
+		android:title="@string/edit"
+		android:orderInCategory="2"
+		app:showAsAction="ifRoom|withText" />
+	<item android:id="@+id/menuDelete"
+		android:icon="@android:drawable/ic_menu_delete"
+		android:title="@string/delete"
+		android:orderInCategory="3"
+		app:showAsAction="ifRoom|withText" />
+	<item
 		android:icon="@drawable/ic_menu_sync"
 		android:title="@string/menuSync"
-       	android:showAsAction="always"
-        android:orderInCategory="2"
-		android:id="@+id/menuSync"/>
+		android:orderInCategory="2"
+		android:id="@+id/menuSync"
+		app:showAsAction="always" />
    	<item 
 		android:icon="@android:drawable/ic_menu_sort_by_size"
 		android:title="@string/sortByDate"
-       	android:showAsAction="ifRoom"
-        android:orderInCategory="2"
-		android:id="@+id/menuSort"/>
+		android:orderInCategory="2"
+		android:id="@+id/menuSort"
+		app:showAsAction="ifRoom" />
 	<item 
 		android:icon="@android:drawable/ic_menu_search"
 		android:title="@string/menuSearch"
-		android:showAsAction="ifRoom"
-        android:orderInCategory="1"
-		android:id="@+id/menuSearch"/>
+		android:orderInCategory="1"
+		android:id="@+id/menuSearch"
+		app:showAsAction="ifRoom" />
 	<item 
 		android:title="@string/menuImport"
 		android:icon="@android:drawable/ic_menu_upload"
-       	android:showAsAction="never"
-        android:orderInCategory="3"
-		android:id="@+id/menuImport"/>
+		android:orderInCategory="3"
+		android:id="@+id/menuImport"
+		app:showAsAction="never" />
 	<item 
 		android:icon="@android:drawable/ic_menu_revert"
 		android:title="@string/menuRevert"
-		android:showAsAction="never"
-        android:orderInCategory="3"
-		android:id="@+id/menuRevert"/>
+		android:orderInCategory="3"
+		android:id="@+id/menuRevert"
+		app:showAsAction="never" />
 	<item 
 		android:title="@string/menuAbout"
 		android:icon="@android:drawable/ic_menu_info_details"
-       	android:showAsAction="never"
-        android:orderInCategory="4"
-		android:id="@+id/menuAbout"/>
+		android:orderInCategory="4"
+		android:id="@+id/menuAbout"
+		app:showAsAction="never" />
 	<item 
 		android:icon="@android:drawable/ic_menu_preferences"
 		android:title="@string/menuPrefs"
-       	android:showAsAction="never"
-        android:orderInCategory="5"
-		android:id="@+id/menuPrefs"/>
+		android:orderInCategory="5"
+		android:id="@+id/menuPrefs"
+		app:showAsAction="never" />
 
 </menu>
