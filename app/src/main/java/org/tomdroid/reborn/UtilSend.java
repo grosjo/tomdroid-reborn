@@ -31,7 +31,8 @@ public class UtilSend {
 		}
 	}
 	
-	private Handler noteContentHandler = new Handler() {
+	private Handler noteContentHandler = new Handler()
+	{
 
 		@Override
 		public void handleMessage(Message msg) {

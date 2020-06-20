@@ -1,0 +1,15 @@
+<resources>
+   <string-array name="sync_conflict_names">
+        <item>Always ask</item>
+        <item>Use local note and overwrite distant</item>
+        <item>Use server note and overwrite local</item>
+        <item>Save both (Duplicate)</item>
+    </string-array>
+
+    <integer-array name="sync_conflict_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </integer-array>
+</resources>

@@ -1,86 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 
- Tomdroid
+ Tomdroid Reborn
  Tomboy on Android
- http://www.launchpad.net/tomdroid
+ https://github.com/grosjo/tomdroid-reborn
 
- Copyright 2009, 2011 Olivier Bilodeau <olivier@bottomlesspit.org>
+ Forked from Olivier Bilodeau <olivier@bottomlesspit.org>
  
- This file is part of Tomdroid.
- 
- Tomdroid is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
- 
- Tomdroid is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
- 
- You should have received a copy of the GNU General Public License
- along with Tomdroid.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
    	<item 
 		android:icon="@android:drawable/ic_menu_add"
 		android:title="@string/menuNew"
-		android:orderInCategory="2"
+		android:orderInCategory="1"
 		android:id="@+id/menuNew"
-		app:showAsAction="always" />
-	<item android:id="@+id/menuEdit"
-		android:icon="@android:drawable/ic_menu_edit"
-		android:title="@string/edit"
-		android:orderInCategory="2"
-		app:showAsAction="ifRoom|withText" />
-	<item android:id="@+id/menuDelete"
-		android:icon="@android:drawable/ic_menu_delete"
-		android:title="@string/delete"
-		android:orderInCategory="3"
-		app:showAsAction="ifRoom|withText" />
+		android:showAsAction="always"
+		/>
 	<item
 		android:icon="@drawable/ic_menu_sync"
 		android:title="@string/menuSync"
 		android:orderInCategory="2"
 		android:id="@+id/menuSync"
-		app:showAsAction="always" />
+		android:showAsAction="always" />
+
+	<item android:id="@+id/menuEdit"
+		android:icon="@android:drawable/ic_menu_edit"
+		android:title="@string/edit"
+		android:orderInCategory="3"
+		android:showAsAction="ifRoom" />
+	<item android:id="@+id/menuDelete"
+		android:icon="@android:drawable/ic_menu_delete"
+		android:title="@string/delete"
+		android:orderInCategory="4"
+		android:showAsAction="ifRoom" />
    	<item 
 		android:icon="@android:drawable/ic_menu_sort_by_size"
-		android:title="@string/sortByDate"
-		android:orderInCategory="2"
+		android:title="@string/display_sort_bydate"
+		android:orderInCategory="5"
 		android:id="@+id/menuSort"
-		app:showAsAction="ifRoom" />
+		android:showAsAction="ifRoom" />
 	<item 
 		android:icon="@android:drawable/ic_menu_search"
 		android:title="@string/menuSearch"
-		android:orderInCategory="1"
+		android:orderInCategory="6"
 		android:id="@+id/menuSearch"
-		app:showAsAction="ifRoom" />
+		android:showAsAction="ifRoom" />
 	<item 
 		android:title="@string/menuImport"
 		android:icon="@android:drawable/ic_menu_upload"
-		android:orderInCategory="3"
+		android:orderInCategory="7"
 		android:id="@+id/menuImport"
-		app:showAsAction="never" />
+		android:showAsAction="ifRoom" />
 	<item 
 		android:icon="@android:drawable/ic_menu_revert"
 		android:title="@string/menuRevert"
-		android:orderInCategory="3"
+		android:orderInCategory="8"
 		android:id="@+id/menuRevert"
-		app:showAsAction="never" />
+		android:showAsAction="ifRoom" />
 	<item 
 		android:title="@string/menuAbout"
 		android:icon="@android:drawable/ic_menu_info_details"
-		android:orderInCategory="4"
+		android:orderInCategory="9"
 		android:id="@+id/menuAbout"
-		app:showAsAction="never" />
+		android:showAsAction="ifRoom" />
 	<item 
 		android:icon="@android:drawable/ic_menu_preferences"
 		android:title="@string/menuPrefs"
-		android:orderInCategory="5"
+		android:orderInCategory="10"
 		android:id="@+id/menuPrefs"
-		app:showAsAction="never" />
+		android:showAsAction="never" />
 
 </menu>

@@ -1,25 +1,3 @@
-/*
- * Tomdroid
- * Tomboy on Android
- * http://www.launchpad.net/tomdroid
- * 
- * Copyright 2009, Benoit Garret <benoit.garret_launchpad@gadz.org>
- * 
- * This file is part of Tomdroid.
- * 
- * Tomdroid is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * Tomdroid is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with Tomdroid.  If not, see <http://www.gnu.org/licenses/>.
- */
 package org.tomdroid.reborn;
 
 import android.app.Activity;
@@ -300,24 +278,20 @@ public class WebSyncService extends SyncService implements SyncServiceAuth {
 
 		WebOAuthConnection auth = new WebOAuthConnection();
 
-		auth.accessToken = Preferences.getString(Preferences.Key.ACCESS_TOKEN);
+		auth.accessToken = Preferences.getString(Preferences.Key.NC_ACCESS_TOKEN);
 		auth.accessTokenSecret = Preferences
-				.getString(Preferences.Key.ACCESS_TOKEN_SECRET);
+				.getString(Preferences.Key.NC_ACCESS_TOKEN_SECRET);
 		auth.requestToken = Preferences
-				.getString(Preferences.Key.REQUEST_TOKEN);
+				.getString(Preferences.Key.NC_REQUEST_TOKEN);
 		auth.requestTokenSecret = Preferences
-				.getString(Preferences.Key.REQUEST_TOKEN_SECRET);
-		auth.oauth10a = Preferences.getBoolean(Preferences.Key.OAUTH_10A);
+				.getString(Preferences.Key.NC_REQUEST_TOKEN_SECRET);
+		auth.oauth10a = Preferences.getBoolean(Preferences.Key.NC_OAUTH_10A);
 		auth.authorizeUrl = Preferences
-				.getString(Preferences.Key.AUTHORIZE_URL);
+				.getString(Preferences.Key.NC_AUTHORIZE_URL);
 		auth.accessTokenUrl = Preferences
-				.getString(Preferences.Key.ACCESS_TOKEN_URL);
+				.getString(Preferences.Key.NC_ACCESS_TOKEN_URL);
 		auth.requestTokenUrl = Preferences
-				.getString(Preferences.Key.REQUEST_TOKEN_URL);
-		auth.rootApi = Preferences
-				.getString(Preferences.Key.SYNC_SERVER_ROOT_API);
-		auth.userApi = Preferences
-				.getString(Preferences.Key.SYNC_SERVER_USER_API);
+				.getString(Preferences.Key.NC_REQUEST_TOKEN_URL);
 
 		return auth;
 	}

@@ -1,30 +1,7 @@
-/*
- * Tomdroid
- * Tomboy on Android
- * http://www.launchpad.net/tomdroid
- * 
- * Copyright 2009, 2010, 2011 Olivier Bilodeau <olivier@bottomlesspit.org>
- * Copyright 2009, 2010 Benoit Garret <benoit.garret_launchpad@gadz.org>
- * Copyright 2011 Stefan Hammer <j.4@gmx.at>
- * 
- * This file is part of Tomdroid.
- * 
- * Tomdroid is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * Tomdroid is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with Tomdroid.  If not, see <http://www.gnu.org/licenses/>.
- */
 package org.tomdroid.reborn;
 
 import android.app.Activity;
+import androidx.loader.content.*;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -32,12 +9,10 @@ import android.net.Uri;
 import android.text.Html;
 import android.widget.ListAdapter;
 
-import androidx.loader.content.CursorLoader;
-
 import java.util.*;
 import java.util.regex.*;
 
-@SuppressWarnings("deprecation")
+
 public class NoteManager {
 	
 	public static final String[] FULL_PROJECTION = { Note.ID, Note.TITLE, Note.FILE, Note.NOTE_CONTENT, Note.MODIFIED_DATE, Note.GUID, Note.TAGS };
@@ -46,7 +21,7 @@ public class NoteManager {
 	public static final String[] TITLE_PROJECTION = { Note.TITLE, Note.GUID };
 	public static final String[] GUID_PROJECTION = { Note.ID, Note.GUID };
 	public static final String[] ID_PROJECTION = { Note.ID };
-	public static final String[] EMPTY_PROJECTION = {};
+	//public static final String[] EMPTY_PROJECTION = {};
 	
 	// static properties
 	private static final String TAG = "NoteManager";
@@ -85,11 +60,13 @@ public class NoteManager {
                 whereArgs,
                 null);
 		activity.startManagingCursor(cursor);
-		if (cursor == null || cursor.getCount() == 0) {
+		if (cursor == null || cursor.getCount() == 0)
+		{
 			cursor.close();
 			return null;
 		}
-		else {
+		else
+		{
 			cursor.moveToFirst();
 			String noteContent = cursor.getString(cursor.getColumnIndexOrThrow(Note.NOTE_CONTENT));
 			String noteTitle = cursor.getString(cursor.getColumnIndexOrThrow(Note.TITLE));
@@ -382,17 +359,8 @@ public class NoteManager {
 		return notes;
 	}	
 
-	public static ListAdapter getListAdapter(Activity activity, String querys, int selectedIndex) {
-		
-		boolean includeNotebookTemplates = Preferences.getBoolean(Preferences.Key.INCLUDE_NOTE_TEMPLATES);
-		boolean includeDeletedNotes = Preferences.getBoolean(Preferences.Key.INCLUDE_DELETED_NOTES);
-		
-		int optionalQueries = 0;
-		if(!includeNotebookTemplates)
-			optionalQueries++;
-		if(!includeDeletedNotes)
-			optionalQueries++;
-		
+	public static ListAdapter getListAdapter(Activity activity, String querys, int selectedIndex)
+	{
 		String[] qargs = null;
 		String where = "";
 		int count = 0;
@@ -400,23 +368,21 @@ public class NoteManager {
 		if (querys != null ) {
 			// sql statements to search notes
 			String[] query = querys.split(" ");
-			qargs = new String[query.length+optionalQueries];
+			qargs = new String[query.length+2];
 			for (String string : query) {
 				qargs[count++] = "%"+XmlUtils.escape(string)+"%"; 
 				where = where + (where.length() > 0? " AND ":"")+"("+Note.NOTE_CONTENT_PLAIN+" LIKE ?)";
 			}	
 		}
 		else
-			qargs = new String[optionalQueries];
+			qargs = new String[2];
 		
-		if (!includeDeletedNotes) {
 			where += (where.length() > 0? " AND ":"")+"(" + Note.TAGS + " NOT LIKE ?)";
 			qargs[count++] = "%system:deleted%";
-		}
-		if (!includeNotebookTemplates) {
+
 			where += (where.length() > 0? " AND ":"")+"(" + Note.TAGS + " NOT LIKE ?)";
 			qargs[count++] = "%system:template%";
-		}
+
 
 		// get a cursor representing all notes from the NoteProvider
 		Uri notes = Tomdroid.CONTENT_URI;
@@ -553,12 +519,6 @@ public class NoteManager {
 	}
 	
 		
-	/**
-	 * stripTitleFromContent
-	 * Because of an historic oddity in Tomboy's note format, a note's title is in a <title> tag but is also repeated
-	 * in the <note-content> tag. This method strips it from <note-content>.
-	 * @param noteContent
-	 */
 	public static String stripTitleFromContent(String xmlContent, String title) {
 		// get rid of the title that is doubled in the note's content
 		// using quote to escape potential regexp chars in pattern

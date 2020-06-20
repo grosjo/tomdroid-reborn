@@ -1,42 +1,15 @@
-/*
- * Tomdroid
- * Tomboy on Android
- * http://www.launchpad.net/tomdroid
- * 
- * Copyright 2009, Benoit Garret <benoit.garret_launchpad@gadz.org>
- * 
- * This file is part of Tomdroid.
- * 
- * Tomdroid is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * Tomdroid is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with Tomdroid.  If not, see <http://www.gnu.org/licenses/>.
- */
 package org.tomdroid.reborn;
 
 import android.net.Uri;
-import oauth.signpost.OAuthConsumer;
-import oauth.signpost.OAuthProvider;
-import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
-import oauth.signpost.commonshttp.CommonsHttpOAuthProvider;
-import oauth.signpost.exception.OAuthCommunicationException;
-import oauth.signpost.exception.OAuthExpectationFailedException;
-import oauth.signpost.exception.OAuthMessageSignerException;
-import oauth.signpost.exception.OAuthNotAuthorizedException;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
+import oauth.signpost.*;
+import oauth.signpost.commonshttp.*;
+import oauth.signpost.exception.*;
+import org.apache.http.*;
+import org.apache.http.client.*;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -79,7 +52,7 @@ public class WebOAuthConnection extends WebConnection {
 	private OAuthProvider getProvider() {
 		
 		// use our http client that accepts self-signed certificates
-		DefaultHttpClient httpclient = WebSSLSocketFactory.getNewHttpClient();
+		HttpClient httpclient = WebSSLSocketFactory.getNewHttpClient();
 		
 		// Use the provider bundled with signpost, the android libs are buggy
 		// See: http://code.google.com/p/oauth-signpost/issues/detail?id=20
@@ -259,15 +232,13 @@ public class WebOAuthConnection extends WebConnection {
 	
 	public void saveConfiguration() {
 		
-		Preferences.putString(Preferences.Key.ACCESS_TOKEN, accessToken);
-		Preferences.putString(Preferences.Key.ACCESS_TOKEN_SECRET, accessTokenSecret);
-		Preferences.putString(Preferences.Key.ACCESS_TOKEN_URL, accessTokenUrl);
-		Preferences.putString(Preferences.Key.REQUEST_TOKEN, requestToken);
-		Preferences.putString(Preferences.Key.REQUEST_TOKEN_SECRET, requestTokenSecret);
-		Preferences.putString(Preferences.Key.REQUEST_TOKEN_URL, requestTokenUrl);
-		Preferences.putBoolean(Preferences.Key.OAUTH_10A, oauth10a);
-		Preferences.putString(Preferences.Key.AUTHORIZE_URL, authorizeUrl);
-		Preferences.putString(Preferences.Key.SYNC_SERVER_ROOT_API, rootApi);
-		Preferences.putString(Preferences.Key.SYNC_SERVER_USER_API, userApi);
+		Preferences.putString(Preferences.Key.NC_ACCESS_TOKEN, accessToken);
+		Preferences.putString(Preferences.Key.NC_ACCESS_TOKEN_SECRET, accessTokenSecret);
+		Preferences.putString(Preferences.Key.NC_ACCESS_TOKEN_URL, accessTokenUrl);
+		Preferences.putString(Preferences.Key.NC_REQUEST_TOKEN, requestToken);
+		Preferences.putString(Preferences.Key.NC_REQUEST_TOKEN_SECRET, requestTokenSecret);
+		Preferences.putString(Preferences.Key.NC_REQUEST_TOKEN_URL, requestTokenUrl);
+		Preferences.putBoolean(Preferences.Key.NC_OAUTH_10A, oauth10a);
+		Preferences.putString(Preferences.Key.NC_AUTHORIZE_URL, authorizeUrl);
 	}
 }

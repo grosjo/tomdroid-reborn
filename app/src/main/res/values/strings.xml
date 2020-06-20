@@ -1,26 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 
- Tomdroid
- Tomboy on Android
- http://www.launchpad.net/tomdroid
 
- Copyright 2008, 2009, 2010, 2011 Olivier Bilodeau <olivier@bottomlesspit.org>
- 
- This file is part of Tomdroid.
- 
- Tomdroid is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
- 
- Tomdroid is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
- 
- You should have received a copy of the GNU General Public License
- along with Tomdroid.  If not, see <http://www.gnu.org/licenses/>.
--->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 	
 	<!-- application details -->
@@ -46,18 +25,35 @@
 	<string name="strWelcome">Welcome to Tomdroid Reborn.<xliff:g id="linebreak">\n\n</xliff:g>This is a fork from Olivier Bilodeau work.<xliff:g id="linebreak">\n\n</xliff:g>Please submit issues on https://github.com/grosjo/tomdroid-reborn/issues.<xliff:g id="linebreak">\n\n</xliff:g>Please also check Tomboy Reborn for the desktop version (https://github.com/grosjo/tomboy-reborn/ or Debian/Arch packages.<xliff:g id="linebreak">\n</xliff:g></string>
 	<!-- placeholder-1 is a description of the app, placeholder-2 is the authors name and placeholder-3 the version number -->
 	<string name="strAbout"><xliff:g id="description" example="Note taking app">%1$s\n\n</xliff:g>Author<xliff:g id="author" example=": Max Example">: %2$s\n</xliff:g>Version<xliff:g id="version" example="0.7.4">: %3$s\n</xliff:g>Licensed under the GPLv3</string>
-	
-	<!-- positive Button -->
+
+	<string name="settings_display">Display settings</string>
+	<string name="display_scale">Font scaling (%)</string>
+	<string name="display_color_title">Title color</string>
+	<string name="display_color_text">Text color</string>
+	<string name="display_color_highlight">Highlight color</string>
+	<string name="display_color_background">Background color</string>
+	<string name="allow_multiple_notebooks">Allow multiple notebooks per note</string>
+	<string name="display_sort_type">Default Sort Method</string>
+	<string name="display_sort_bydate">Sort by Date</string>
+	<string name="display_sort_bytitle">Sort by Title</string>
+
+	<string name="settings_sync">Sync settings</string>
+	<string name="sync_conflict">When a conflict is detected</string>
+	<string name="sync_file">Sync with SDCard</string>
+	<string name="sync_nc">Owncloud/NextCloud</string>
+	<string name="sync_nc_summary">You need to install Grauphel plugin on your server</string>
+	<string name="sync_auto">Auto-synchronization</string>
+	<string name="sync_period">Period (mins)</string>
+	<string name="sync_location">Local folder</string>
+	<string name="sync_url">URL</string>
+
+
 	<string name="btnOk">OK</string>
-	<!-- negative Button -->
 	<string name="btnCancel">Cancel</string>
-	<!-- Button -->
 	<string name="btnClose">Close</string>
-	<!-- Button -->
 	<string name="btnProjectPage">Project page</string>
 	<string name="btnSavetoSD">Save</string>
 	
-	<!-- note-view.xml, placeholder-1 is "..." -->
 	<string name="strWait">Please wait while note loads<xliff:g id="points">…</xliff:g></string>
 	
 	<string name="prefSyncService">Service</string>
@@ -98,13 +94,10 @@
 	
 	<!-- NoteSorting -->
 	<string name="titleDefaultSorting">Choose default sorting method</string>
-	<string name="prefDefaultSortingTitle">Default Sort Method</string>
 	<string name="prefSorting">Sort By:</string>
 	<string name="prefSortDate">Date Modified</string>
 	<string name="prefSortTitle">Note Title</string>
-	<string name="sortByDate">Sort by Date</string>
-	<string name="sortByTitle">Sort by Title</string>
-	
+
 	<!-- NotebookFiltering -->
 	<string name="menuFilterNotebook">Filter</string>
 	<string name="strListEmptyNoNotebooks">There are no notebooks in the database.</string>
@@ -205,12 +198,12 @@
 	<string name="filePickerTitle"><xliff:g id="appname">Tomdroid - </xliff:g>Import Note</string>
 			
 	<!-- new prefs -->
-	<!-- subheader in settings -->
+	<!-- subheader in preferences -->
 	<string name="prefDisplay">Display Preferences</string>
 	<string name="prefBaseSize">Base Font Size</string>
-	<!-- subheader in settings -->
+	<!-- subheader in preferences -->
 	<string name="prefSync">Synchronization</string>
-	<!-- subheader in settings -->
+	<!-- subheader in preferences -->
 	<string name="prefTools">Tools</string>
 	<string name="prefAutoSave">Save notes automatically on exiting editor.</string>
 	<string name="prefDeletedNotesTitle">Show Deleted Notes</string>
@@ -226,27 +219,27 @@
 	<string name="backupPref">Copy all local notes to SD Card</string>
 	<string name="autoBackupPrefTitle">Auto-Backup</string>
 	<string name="autoBackupPref">Copy local note to SD Card on save</string>
-	<!-- subheader in settings -->
+	<!-- subheader in preferences -->
 	<string name="prefLinks">Hyperlink Preferences</string>
-	<!-- Checkbox in settings -->
+	<!-- Checkbox in preferences -->
 	<string name="prefLinkTitlesTitle">Link Titles</string>
-	<!-- Description for checkbox in settings -->
+	<!-- Description for checkbox in preferences -->
 	<string name="prefLinkTitles">Link to other note titles</string>
-	<!-- Checkbox in settings -->
+	<!-- Checkbox in preferences -->
 	<string name="prefLinkUrlsTitle">Link Web Addresses"</string>
-	<!-- Description for checkbox in settings -->
+	<!-- Description for checkbox in preferences -->
 	<string name="prefLinkUrls">e.g. <xliff:g id="url">"www.google.com"</xliff:g></string>
-	<!-- Checkbox in settings -->
+	<!-- Checkbox in preferences -->
 	<string name="prefLinkEmailsTitle">Link Emails</string>
-	<!-- Description for checkbox in settings -->
+	<!-- Description for checkbox in preferences -->
 	<string name="prefLinkEmails">e.g. <xliff:g id="email">name@address.com</xliff:g></string>
-	<!-- Checkbox in settings -->
+	<!-- Checkbox in preferences -->
 	<string name="prefLinkPhonesTitle">Link Telephone Numbers</string>
-	<!-- Description for checkbox in settings -->
+	<!-- Description for checkbox in preferences -->
 	<string name="prefLinkPhones">Link telephone numbers to phone app</string>
-	<!-- Checkbox in settings -->
+	<!-- Checkbox in preferences -->
 	<string name="prefLinkAddressesTitle">Link Map Addresses</string>
-	<!-- Description for checkbox in settings -->
+	<!-- Description for checkbox in preferences -->
 	<string name="prefLinkAddresses">Link addresses to maps app</string>
 			
 	<!-- syncNotes -->
