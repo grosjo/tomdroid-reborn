@@ -23,26 +23,9 @@ public class Preferences {
 
 		NOTEBOOKS_MULTIPLE ("allowmultiple",true),
 
-		NC_ACCESS_TOKEN ("access_token", ""),
-		NC_ACCESS_TOKEN_SECRET ("access_token_secret", ""),
-		NC_REQUEST_TOKEN ("request_token", ""),
-		NC_REQUEST_TOKEN_SECRET ("request_token_secret", ""),
-		NC_OAUTH_10A ("oauth_10a", false),
-		NC_AUTHORIZE_URL ("authorize_url", ""),
-		NC_ACCESS_TOKEN_URL ("access_token_url", ""),
-		NC_REQUEST_TOKEN_URL ("request_token_url", ""),
-
-		LATEST_SYNC_REVISION ("latest_sync_revision", -1L),
-		LATEST_SYNC_DATE ("latest_sync_date", (new TTime()).formatTomboy()), // will be used to tell whether we have newer notes
-
-		LAST_FILE_PATH ("last_file_path", "/"),
-
-		SYNC_SERVER_ROOT_API ("sync_server_root_api", ""),
-		SYNC_SERVER_USER_API ("sync_server_user_api", ""),
-
-		FIRST_RUN ("first_run", true),
-
-		BASE_TEXT_SIZE("base_text_size","18");
+		NC_KEY ("nc_key", ""),
+		NC_TOKEN ("access_token", ""),
+		NC_TOKEN_SECRET ("access_token_secret", "");
 
 		private String name = "";
 		private Object defaultValue = "";
@@ -63,7 +46,21 @@ public class Preferences {
 	
 	private static SharedPreferences client = null;
 	private static SharedPreferences.Editor editor = null;
-	
+
+	public static String MD5(String md5) {
+		try {
+			java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
+			byte[] array = md.digest(md5.getBytes());
+			StringBuffer sb = new StringBuffer();
+			for (int i = 0; i < array.length; ++i) {
+				sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1,3));
+			}
+			return sb.toString();
+		} catch (java.security.NoSuchAlgorithmException e) {
+		}
+		return null;
+	}
+
 	public static void init(Context context, boolean clean) {
 		
 		client = PreferenceManager.getDefaultSharedPreferences(context);
@@ -71,6 +68,11 @@ public class Preferences {
 		
 		if (clean)
 			editor.clear().commit();
+
+		if(getString(Key.NC_KEY).length()<5)
+		{
+			putString(Key.NC_KEY,MD5(String.format("%d",(long)(Math.random() * 99999999999L + 1123234345))));
+		}
 	}
 	
 	public static String getString(Key key) {

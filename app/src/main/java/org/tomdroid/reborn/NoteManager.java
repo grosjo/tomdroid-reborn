@@ -29,18 +29,18 @@ public class NoteManager {
 	private static String sortOrder;
 
 	// column name for sortOrder
-	private static String sortOrderBy;
+	private static Boolean sortOrderBy;
 
-	public static void setSortOrder(String orderBy) {
+	public static void setSortOrder(Boolean orderBy) {
 		sortOrderBy = orderBy;
-		if(orderBy.equals("sort_title")) {
+		if(orderBy) {
 			sortOrder = Note.TITLE + " ASC";
 		} else {
 			sortOrder = Note.MODIFIED_DATE + " DESC";
 		}
 	}
 
-	public static String getSortOrder() {
+	public static Boolean getSortOrder() {
 		return sortOrderBy;
 	}
 
@@ -660,15 +660,8 @@ public class NoteManager {
 		return null;
 	}
 	
-	public static String toggleSortOrder() {
-		String orderBy = getSortOrder();
-		if(orderBy == null) {
-			orderBy = "sort_title";
-		} else if(orderBy.equals("sort_title")) {
-			orderBy = "sort_date";
-		} else {
-			orderBy = "sort_title";
-		}
+	public static Boolean toggleSortOrder() {
+		Boolean orderBy = !getSortOrder();
 		setSortOrder(orderBy);
 		return orderBy;
 	}

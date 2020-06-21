@@ -80,6 +80,19 @@ public class PreferencesActivity extends AppCompatActivity
 
 		final Activity act = this;
 
+		// Chance NC URK
+		sync_nc.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+
+			public boolean onPreferenceChange(Preference preference, Object locationUri) {
+
+				if (((String)locationUri).compareTo(Preferences.getString(Preferences.Key.SYNC_NC_URL)) !=0)
+				{
+					Preferences.putString(Preferences.Key.NC_TOKEN,"");
+				}
+				return true;
+			}
+		});
+
 		// Change the Folder Location
 		sync_file.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 

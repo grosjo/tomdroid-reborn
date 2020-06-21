@@ -34,7 +34,7 @@ public class WebSyncService extends SyncService implements SyncServiceAuth {
 	}
 
 	public boolean isConfigured() {
-		WebOAuthConnection auth = getAuthConnection();
+		//WebOAuthConnection auth = getAuthConnection();
 		return auth.isAuthenticated();
 	}
 
@@ -50,7 +50,7 @@ public class WebSyncService extends SyncService implements SyncServiceAuth {
 
 	@Override
 	public boolean needsAuth() {
-		WebOAuthConnection auth = getAuthConnection();
+		//WebOAuthConnection auth = getAuthConnection();
 		return !auth.isAuthenticated();
 	}
 
@@ -61,7 +61,7 @@ public class WebSyncService extends SyncService implements SyncServiceAuth {
 			public void run() {
 
 				// Reset the authentication credentials
-				WebOAuthConnection auth = new WebOAuthConnection();
+				//WebOAuthConnection auth = new WebOAuthConnection();
 				Uri authUri = null;
 
 				try {
@@ -92,7 +92,7 @@ public class WebSyncService extends SyncService implements SyncServiceAuth {
 					// else the user might try to sync before the authorization
 					// process
 					// is complete
-					WebOAuthConnection auth = getAuthConnection();
+					//WebOAuthConnection auth = getAuthConnection();
 					boolean result = auth.getAccess(uri
 							.getQueryParameter("oauth_verifier"));
 
@@ -140,7 +140,7 @@ public class WebSyncService extends SyncService implements SyncServiceAuth {
 
 			public void run() {
 
-				WebOAuthConnection auth = getAuthConnection();
+				//WebOAuthConnection auth = getAuthConnection();
 				latestRemoteRevision = (int)Preferences.getLong(Preferences.Key.LATEST_SYNC_REVISION);
 
 				try {
@@ -271,12 +271,12 @@ public class WebSyncService extends SyncService implements SyncServiceAuth {
 			sendMessage(PARSING_COMPLETE);
 	}
 
-	private WebOAuthConnection getAuthConnection() {
+	private /*WebOAuthConnection*/TOTO getAuthConnection() {
 
 		// TODO: there needs to be a way to reset these values, otherwise cannot
 		// change server!
 
-		WebOAuthConnection auth = new WebOAuthConnection();
+		//WebOAuthConnection auth = new WebOAuthConnection();
 
 		auth.accessToken = Preferences.getString(Preferences.Key.NC_ACCESS_TOKEN);
 		auth.accessTokenSecret = Preferences
@@ -312,7 +312,7 @@ public class WebSyncService extends SyncService implements SyncServiceAuth {
 				
 		syncInThread(new Runnable() {
 			public void run() {
-				WebOAuthConnection auth = getAuthConnection();
+				//WebOAuthConnection auth = getAuthConnection();
 				try {
 					TLog.v(TAG, "pushing {0} notes to remote service, sending rev #{1}",notes.size(), newRevision);
 					String rawResponse = auth.get(userRef);
@@ -400,7 +400,7 @@ public class WebSyncService extends SyncService implements SyncServiceAuth {
 
 			public void run() {
 
-				WebOAuthConnection auth = getAuthConnection();
+				//WebOAuthConnection auth = getAuthConnection();
 
 				try {
 					TLog.v(TAG, "contacting " + userRef);
@@ -466,7 +466,7 @@ public class WebSyncService extends SyncService implements SyncServiceAuth {
 
 			public void run() {
 
-				WebOAuthConnection auth = getAuthConnection();
+				//WebOAuthConnection auth = getAuthConnection();
 
 				try {
 					TLog.v(TAG, "contacting " + userRef);

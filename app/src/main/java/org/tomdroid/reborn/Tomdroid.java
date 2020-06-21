@@ -179,7 +179,7 @@ public class Tomdroid extends ActionBarListActivity {
 			setHomeButtonEnabled(false);
 		}
 	    
-		String defaultSortOrder = Preferences.getString(Preferences.Key.DISPLAY_SORT_ORDER);
+		Boolean defaultSortOrder = Preferences.getBoolean(Preferences.Key.DISPLAY_SORT_ORDER);
 		NoteManager.setSortOrder(defaultSortOrder);
 		
 	    // set list adapter
