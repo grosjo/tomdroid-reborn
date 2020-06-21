@@ -11,7 +11,7 @@ public class TPrefs
 
 	// Global definition for Tomdroid
 	public static final String      AUTHORITY                       = "org.tomdroid.reborn.notes";
-	public static final Uri CONTENT_URI                     = Uri.parse("content://" + AUTHORITY + "/notes");
+	public static final Uri 		CONTENT_URI                     = Uri.parse("content://" + AUTHORITY + "/notes");
 	//public static final String      CONTENT_TYPE            = "vnd.android.cursor.dir/vnd.tomdroid.note";
 	//public static final String      CONTENT_ITEM_TYPE       = "vnd.android.cursor.item/vnd.tomdroid.note";
 	//public static final String      PROJECT_HOMEPAGE        = "https://github.com/grosjo/tomdroid-reborn/";
@@ -26,8 +26,6 @@ public class TPrefs
 		SYNC_CONFLICT ("sync_conflict", 0),
 		SYNC_SDCARD_ACTIVE ("sync_file_switch", 1),
 		SYNC_SDCARD ("sync_file", "tomdroid"),
-		SYNC_NC_ACTIVE ("sync_nc_switch", false),
-		SYNC_NC_URL ("sync_nc", "https://YOURSERVER/index.php/apps/grauphel"),
 
 		DISPLAY_SCALE ("display_scale", 100),
 		DISPLAY_COLOR_TITLE ("color_title", "#000055"),
@@ -38,9 +36,13 @@ public class TPrefs
 
 		NOTEBOOKS_MULTIPLE ("allowmultiple",true),
 
+		SYNC_NC_ACTIVE ("sync_nc_switch", false),
+		SYNC_NC_URL ("sync_nc", "https://YOURSERVER/index.php/apps/grauphel"),
 		NC_KEY ("nc_key", ""),
 		NC_TOKEN ("access_token", ""),
-		NC_TOKEN_SECRET ("access_token_secret", "");
+		NC_TOKEN_SECRET ("access_token_secret", ""),
+
+		LATEST_SYNC_DATE ("latest_sync_date",0L);
 
 		private String name = "";
 		private Object defaultValue = "";

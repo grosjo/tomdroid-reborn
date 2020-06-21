@@ -1,70 +1,99 @@
 
 package org.tomdroid.reborn;
 
-import android.os.Handler;
-import android.text.SpannableStringBuilder;
-import android.text.TextUtils;
+import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.net.Uri;
+import android.text.Html;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.UUID;
 
-public class Note implements Serializable {
+public class Note
+{
 
-	private static final long serialVersionUID = 1L;
-	// Static references to fields (used in Bundles, ContentResolvers, etc.)
-	public static final String ID = "_id";
-	public static final String GUID = "guid";
-	public static final String TITLE = "title";
-	public static final String MODIFIED_DATE = "modified_date";
-	//public static final String URL = "url";
-	public static final String FILE = "file";
-	public static final String TAGS = "tags";
-	public static final String NOTE_CONTENT = "content";
-	public static final String NOTE_CONTENT_PLAIN = "content_plain";
-	
-	// Notes constants
-	public static final int NOTE_HIGHLIGHT_COLOR = 0x99FFFF00; // lowered alpha to show cursor
+	private static final String TAG = "Note";
+
 	public static final int NOTE_BULLET_INTENT_FACTOR = 30;			// intent factor of bullet lists
 	public static final String NOTE_MONOSPACE_TYPEFACE = "monospace";
 	public static final float NOTE_SIZE_SMALL_FACTOR = 0.8f;
 	public static final float NOTE_SIZE_LARGE_FACTOR = 1.5f;
 	public static final float NOTE_SIZE_HUGE_FACTOR = 1.8f;
-	
+
+	public static final String NOTE_CONTENT_PLAIN = "content_plain";
+
 	// Members
-	private SpannableStringBuilder noteContent;
-	private String xmlContent;
-	private String url;
-	private String fileName;
-	private String title;
-	private String tags = "";
-	private String lastChangeDate;
-	private int dbId;
+	public static final String ID = "_id";
+	public long id;
 
-	// Unused members (for SD Card)
-	
-	public String createDate = new TDate().formatTomboy();
-	public int cursorPos = 0;
-	public int height = 0;
-	public int width = 0;
-	public int X = -1;
-	public int Y = -1;
+	public static final String GUID = "guid";
+	public String Guid;
 
-	
-	// TODO before guid were of the UUID object type, now they are simple strings 
-	// but at some point we probably need to validate their uniqueness (per note collection or universe-wide?) 
-	private String guid;
-	
-	// this is to tell the sync service to update the last date after pushing this note
-	public boolean lastSync = false;
-	
-	public Note() {
-		tags = new String();
+	public static final String CREATION_DATE = "creationdate";
+	public TDate CreationDate;
+
+	public static final String CHANGE_DATE = "changedate";
+	public TDate ChangeDate;
+
+	public static final String META_CHANGE_DATE = "metachangedate";
+	public TDate MetaChangeDate;
+
+	public static final String VERSION = "version";
+	public String Version;
+
+	public static final String REVISION = "rev";
+	public int Rev;
+
+	public static final String SYNC_DATE = "syncdate";
+	public TDate SyncDate;
+
+	public static final String TITLE = "title";
+	private String Title;
+
+	public static final String NOTE_CONTENT = "content";
+	private String Content;
+
+	public static final String NOTE_PARAMS = "params";
+	public boolean OpenOnStartup;
+	public boolean Pinned;
+	private int CursorPosition, SelectBoundPosition;
+	private int Width;
+	private int Height;
+	private int X,Y;
+
+	public static final String TAGS = "tags";
+	private ArrayList<String> Tags;
+	public String Error;
+
+	public Note()
+	{
+		id =0;
+		Guid = CreateGUID();
+		CreationDate = new TDate();
+		ChangeDate = null;
+		MetaChangeDate = null;
+		Version = "0.3";
+		Rev = 0;
+		SyncDate = null;
+		Title = "New note "+CreationDate.formatTomboy();
+		Content = "Empty note";
+		OpenOnStartup = false;
+		Pinned = false;
+		CursorPosition = 0;
+		SelectBoundPosition = 0;
+		Width = 300; Height=300;
+		X =10; Y=10;
+		Tags = new ArrayList<String>();
+		Error = "";
 	}
-	
-	public Note(JSONObject json) {
-		
+
+	public Note(JSONObject json)
+	{
+		/*
 		// These methods return an empty string if the key is not found
 		setTitle(XmlUtils.unescape(json.optString("title")));
 		setGuid(json.optString("guid"));
@@ -80,150 +109,260 @@ public class Note implements Serializable {
 				tags += tag + ",";
 			}
 		}
+		*/
 	}
 
-	public String getTags() {
-		return tags;
+	public static String CreateGUID()
+	{
+		return UUID.randomUUID().toString();
 	}
-	
-	public void setTags(String tags) {
-		this.tags = tags;
+
+	public static String ReplaceAngles(String s)
+	{
+		s = s.replaceAll("&lt;","<");
+		s = s.replaceAll("&gt;",">");
+		s = s.replaceAll("&x9;","\t");
+		s = s.replaceAll("&apos;","'");
+		s = s.replaceAll("&quot;","\"");
+		return s.replaceAll("&amp;","&");
 	}
-	
-	public void addTag(String tag) {
-		if(tags.length() > 0)
-			this.tags = this.tags+","+tag;
-		else
-			this.tags = tag;
+
+	public static String EncodeAngles(String s)
+	{
+		s = s.replaceAll("<","&lt;");
+		s = s.replaceAll(">","&gt;");
+		s = s.replaceAll("\t","&x9;");
+		s = s.replaceAll("'","&apos;");
+		s = s.replaceAll("\"","&quot;");
+		return s.replaceAll("&","&amp;");
 	}
-	
-	public void removeTag(String tag) {
-		
-		String[] taga = TextUtils.split(this.tags, ",");
-		String newTags = "";
-		for(String atag : taga){
-			if(!atag.equals(tag))
-				newTags += atag;
+
+	public void setTitle(String s)
+	{
+		Title = s;
+		ChangeDate = new TDate();
+	}
+
+	public void setContent(String s)
+	{
+		Content = s;
+		ChangeDate = new TDate();
+	}
+
+	public void setPosition(int x,int y)
+	{
+		X = x; Y = y;
+		MetaChangeDate = new TDate();
+	}
+
+	public void setSize(int w,int h)
+	{
+		Width = w; Height = h;
+		MetaChangeDate = new TDate();
+	}
+
+	public void setCursor(int pos,int s)
+	{
+		CursorPosition = pos;
+		SelectBoundPosition = s;
+		MetaChangeDate = new TDate();
+	}
+
+	public void addTag(String tag)
+	{
+		int i=0;
+		while (i<Tags.size())
+		{
+			if(Tags.get(i).compareTo(tag)==0) return;
+			i = i+1;
 		}
-		this.tags = newTags;
+		Tags.add(tag);
+		MetaChangeDate = new TDate();
 	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public String getFileName() {
-		return fileName;
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public TDate getLastChangeDate()
+	
+	public void removeTag(String tag)
 	{
-		return new TDate(lastChangeDate);
-	}
-	
-	// sets change date to now
-	public void setLastChangeDate()
-	{
-		setLastChangeDate(new TDate());
-	}
-	
-	public void setLastChangeDate(TDate lastChangeDateTime)
-	{
-		lastChangeDate = lastChangeDateTime.formatTomboy();
-	}
-	
-	public void setLastChangeDate(String lastChangeDateStr)
-	{
-		lastChangeDate = lastChangeDateStr;
-	}	
-
-	public void setCreateDate(String createDateStr) {		
-		this.createDate = createDateStr;
-	}
-	
-	public int getDbId() {
-		return dbId;
-	}
-
-	public void setDbId(int id) {
-		this.dbId = id;
-	}
-	
-	public String getGuid() {
-		return guid;
-	}
-	
-	public void setGuid(String guid) {
-		this.guid = guid;
-	}
-
-	// TODO: should this handler passed around evolve into an observer pattern?
-	public SpannableStringBuilder getNoteContent(Handler handler) {
-		
-		// TODO not sure this is the right place to do this
-		noteContent = new NoteContentBuilder().setCaller(handler).setInputSource(xmlContent).setTitle(this.getTitle()).build();
-		return noteContent;
-	}
-	
-	public String getXmlContent() {
-		return xmlContent;
-	}
-	
-	public void setXmlContent(String xmlContent) {
-		this.xmlContent = xmlContent;
+		int i=0;
+		while(i<Tags.size())
+		{
+			if(Tags.get(i).compareTo(tag)==0)
+			{
+				Tags.remove(i);
+				return;
+			}
+			i=i+1;
+		}
+		MetaChangeDate = new TDate();
 	}
 
 	@Override
-	public String toString() {
-
-		return new String("Note: "+ getTitle() + " (" + getLastChangeDate() + ")");
+	public String toString()
+	{
+		return new String("Note: "+Title + " (" + ChangeDate + ")");
 	}
-	
-	// gets full xml to be exported as .note file
-	public String getXmlFileString() {
-		
-		String tagString = "";
 
-		if(tags.length()>0) {
-			String[] tagsA = tags.split(",");
-			tagString = "\n\t<tags>";
-			for(String atag : tagsA) {
-				tagString += "\n\t\t<tag>"+atag+"</tag>"; 
+	private String tagsToXml()
+	{
+		String tags = "";
+
+		if(Tags.size()>0)
+		{
+			int i=0;
+			while(i<Tags.size())
+			{
+				tags = tags + "<tag>"+Tags.get(i)+"</tag>";
+				i++;
 			}
-			tagString += "\n\t</tags>"; 
+			tags = "<tags>"+tags+"</tags>";
 		}
-
-		// TODO: create-date
-		String fileString = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<note version=\"0.3\" xmlns:link=\"http://beatniksoftware.com/tomboy/link\" xmlns:size=\"http://beatniksoftware.com/tomboy/size\" xmlns=\"http://beatniksoftware.com/tomboy\">\n\t<title>"
-				+getTitle().replace("&", "&amp;")+"</title>\n\t<text xml:space=\"preserve\"><note-content version=\"0.1\">"
-				+getTitle().replace("&", "&amp;")+"\n\n" // added for compatibility
-				+getXmlContent()+"</note-content></text>\n\t<last-change-date>"
-				+getLastChangeDate()+"</last-change-date>\n\t<last-metadata-change-date>"
-				+getLastChangeDate()+"</last-metadata-change-date>\n\t<create-date>"
-				+createDate+"</create-date>\n\t<cursor-position>"
-				+cursorPos+"</cursor-position>\n\t<width>"
-				+width+"</width>\n\t<height>"
-				+height+"</height>\n\t<x>"
-				+X+"</x>\n\t<y>"
-				+Y+"</y>"
-				+tagString+"\n\t<open-on-startup>False</open-on-startup>\n</note>\n";
-		return fileString;
+		return tags;
 	}
 
+	private String tagsToString()
+	{
+		String tags = "";
+
+		int i=0;
+		while(i<Tags.size())
+		{
+			if(i>0) { tags = tags + ","; }
+			tags = tags + Tags.get(i);
+			i++;
+		}
+		return tags;
+	}
+
+	// gets full xml to be exported as .note file
+	public String toXML()
+	{
+		String note = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"+
+				"<note version=\""+Version+"\" >\n"+
+				"<title>"+EncodeAngles(Title)+"</title>\n"+
+				"<text xml:space=\"preserve\"><note-content version=\""+Version+"\">"
+				+EncodeAngles(Title)+"\n\n" // added for compatibility
+				+EncodeAngles(Content)+"</note-content></text>\n"
+				+"<last-change-date>"+ChangeDate.formatTomboy()+"</last-change-date>\n"
+				+"<last-metadata-change-date>"+MetaChangeDate.formatTomboy()+"</last-metadata-change-date>\n"
+				+"<create-date>"+CreationDate.formatTomboy()+"</create-date>\n"
+				+"<cursor-position>" +CursorPosition+"</cursor-position>\n"
+				+"<selection-bound-position>"+SelectBoundPosition+"</selection-bound-position>\n"
+				+"<open-on-startup>" +OpenOnStartup+"</open-on-startup>\n"
+				+"<width>" +Width+"</width><height>"+Height+"</height>\n"
+				+"<x>"+X+"</x><y>"+Y+"</y>\n"
+				+tagsToXml()+"\n\t<open-on-startup>False</open-on-startup>\n</note>\n";
+
+		return note;
+	}
+
+	public boolean Load(Activity activity, String guid)
+	{
+		Uri notes = TPrefs.CONTENT_URI;
+
+		String[] projection = { Note.ID, Note.CREATION_DATE, Note.CHANGE_DATE, Note.META_CHANGE_DATE,
+				Note.VERSION, Note.REVISION, Note.SYNC_DATE, Note.TITLE, Note.NOTE_CONTENT,
+				Note.NOTE_PARAMS, Note.TAGS };
+
+		String[] whereArgs = new String[1];
+		whereArgs[0] = guid;
+
+		ContentResolver cr = activity.getContentResolver();
+		Cursor cursor = cr.query(notes,
+				projection,
+				Note.GUID + "= ?",
+				whereArgs,
+				null);
+
+		if (cursor == null || cursor.getCount() == 0) return false;
+
+		id = cursor.getInt(cursor.getColumnIndexOrThrow(Note.ID));
+		Guid = guid;
+		CreationDate = new TDate(cursor.getLong(cursor.getColumnIndexOrThrow(Note.CREATION_DATE)));
+		ChangeDate = new TDate(cursor.getLong(cursor.getColumnIndexOrThrow(Note.CHANGE_DATE)));
+		MetaChangeDate = new TDate(cursor.getLong(cursor.getColumnIndexOrThrow(Note.META_CHANGE_DATE)));
+		Version = cursor.getString(cursor.getColumnIndexOrThrow(Note.VERSION));
+		Rev = cursor.getInt(cursor.getColumnIndexOrThrow(Note.REVISION));
+		SyncDate = new TDate(cursor.getLong(cursor.getColumnIndexOrThrow(Note.SYNC_DATE)));;
+		Title = cursor.getString(cursor.getColumnIndexOrThrow(Note.TITLE));
+		Content = cursor.getString(cursor.getColumnIndexOrThrow(Note.NOTE_CONTENT));
+		String params = cursor.getString(cursor.getColumnIndexOrThrow(Note.NOTE_PARAMS));
+		String[] par = params.split(",");
+		OpenOnStartup = (par[0].compareTo("1")==0);
+		Pinned = (par[1].compareTo("1")==0);
+		CursorPosition = Integer.parseInt(par[2]);
+		SelectBoundPosition = Integer.parseInt(par[3]);;
+		Width = Integer.parseInt(par[4]);
+		Height = Integer.parseInt(par[5]);
+		X = Integer.parseInt(par[6]);
+		Y = Integer.parseInt(par[7]);;
+
+		Tags = new ArrayList<String>();
+		params = cursor.getString(cursor.getColumnIndexOrThrow(Note.TAGS));
+		par = params.split(",");
+		int i = par.length;
+		while(i>0) { i--; Tags.add(par[i]); }
+		Error = "";
+
+		return true;
+	}
+
+	public Uri Save(Activity activity)
+	{
+		Uri notes = TPrefs.CONTENT_URI;
+
+		String[] select = new String[1];
+		select[0] = ID;
+
+		String[] whereArgs = new String[1];
+		whereArgs[0] = Guid;
+
+		ContentResolver cr = activity.getContentResolver();
+		Cursor cursor = cr.query(notes,
+				select,
+				Note.GUID + "= ?",
+				whereArgs,
+				null);
+
+		ContentValues values = new ContentValues();
+		values.put(Note.GUID, Guid);
+		values.put(Note.CREATION_DATE, CreationDate.toLong());
+		values.put(Note.CHANGE_DATE, ChangeDate.toLong());
+		values.put(Note.META_CHANGE_DATE, MetaChangeDate.toLong());
+		values.put(Note.VERSION, Version);
+		values.put(Note.REVISION, Rev);
+		values.put(Note.SYNC_DATE, SyncDate.toLong());
+		values.put(Note.TITLE, Title);
+		values.put(Note.NOTE_CONTENT, Content);
+		String params = "";
+		if(OpenOnStartup) { params = "1"; } else { params = "0"; }
+		if(Pinned) { params = params + ",1"; } else { params = params + ",0"; }
+		params = params + "," + CursorPosition;
+		params = params + "," + SelectBoundPosition;
+		params = params + "," + Width;
+		params = params + "," + Height;
+		params = params + "," + X;
+		params = params + "," + Y;
+		values.put(Note.NOTE_PARAMS, params);
+		values.put(Note.TAGS,tagsToString());
+
+		Uri uri = null;
+
+		if (cursor == null || cursor.getCount() == 0)
+		{
+			TLog.v(TAG, "A new note has been detected (not yet in db)");
+			uri = cr.insert(TPrefs.CONTENT_URI, values);
+			String l = uri.getLastPathSegment();
+			id = Long.parseLong(l);
+			TLog.v(TAG, "Note inserted in content provider. URL: {0} ID: {1} TITLE:{2} GUID:{3}", id, uri, Title,Guid);
+		}
+		else
+		{
+			id = cursor.getInt(cursor.getColumnIndexOrThrow(Note.ID));
+			cr.update(TPrefs.CONTENT_URI, values, Note.GUID+" = ?", whereArgs);
+			uri = Uri.parse(TPrefs.CONTENT_URI+"/"+id);
+			TLog.v(TAG, "Note updated in content provider. URL: {0} ID: {1} TITLE:{2} GUID:{3}", id, uri, Title,Guid);
+		}
+		cursor.close();
+
+		return uri;
+	}
 }

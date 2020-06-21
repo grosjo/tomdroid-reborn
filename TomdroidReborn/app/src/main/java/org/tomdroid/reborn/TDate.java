@@ -22,7 +22,13 @@ public class TDate
         parseTomboy(s);
     }
 
-	public String formatTomboy()
+    public TDate(long l)
+    {
+        date = new Date();
+        date.setTime(l);
+    }
+
+    public String formatTomboy()
     {
         Locale locale = Locale.getDefault();
         Locale.setDefault(Locale.US);
@@ -50,5 +56,10 @@ public class TDate
             return false;
         }
         return true;
+     }
+
+     public long toLong()
+     {
+        return date.getTime();
      }
 }
