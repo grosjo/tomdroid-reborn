@@ -21,8 +21,8 @@ public class TPrefs
 
 	public enum Key
 	{
-		SYNC_AUTO_ACTIVE ("sync_auto", 0),
-		SYNC_AUTO ("sync_period", 10),
+		SYNC_AUTO ("sync_auto", 0),
+		SYNC_PERIOD ("sync_period", 10),
 		SYNC_CONFLICT ("sync_conflict", 0),
 		SYNC_SDCARD_ACTIVE ("sync_file_switch", 1),
 		SYNC_SDCARD ("sync_file", "tomdroid"),
@@ -85,13 +85,13 @@ public class TPrefs
 		return null;
 	}
 
-	public static void init(Context context, boolean clean)
+	public static void init(Context context)
 	{
 		client = PreferenceManager.getDefaultSharedPreferences(context);
 		editor = client.edit();
 		
-		if (clean)
-			editor.clear().apply();
+		//if (clean)
+		//	editor.clear().apply();
 
 		if(getString(Key.NC_KEY).length()<5)
 		{

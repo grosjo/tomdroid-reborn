@@ -2,4 +2,29 @@
     <string name="app_name">TomdroidReborn</string>
     <string name="title_item_detail">Item Detail</string>
     <string name="menu_settings">Settings</string>
+    <string name="menu_about">About</string>
+
+    /* SETTINGS */
+
+    <string name="settings_display">Display settings</string>
+    <string name="display_scale">Font scaling (%)</string>
+    <string name="display_color_title">Title color</string>
+    <string name="display_color_text">Text color</string>
+    <string name="display_color_highlight">Highlight color</string>
+    <string name="display_color_background">Background color</string>
+    <string name="allow_multiple_notebooks">Allow multiple notebooks per note</string>
+    <string name="display_sort_type">Default Sort Method</string>
+    <string name="display_sort_bydate">Sort by Date</string>
+    <string name="display_sort_bytitle">Sort by Title</string>
+
+    <string name="settings_sync">Sync settings</string>
+    <string name="sync_conflict">When a conflict is detected</string>
+    <string name="sync_file">Sync with SDCard</string>
+    <string name="sync_nc">Owncloud/NextCloud</string>
+    <string name="sync_nc_summary">You need to install Grauphel plugin on your server</string>
+    <string name="sync_auto">Auto-synchronization</string>
+    <string name="sync_period">Period (mins)</string>
+    <string name="sync_location">Local folder</string>
+    <string name="sync_url">URL</string>
+
 </resources>

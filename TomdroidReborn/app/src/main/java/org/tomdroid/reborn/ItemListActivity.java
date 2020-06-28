@@ -14,6 +14,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -38,6 +39,22 @@ public class ItemListActivity extends AppCompatActivity {
      */
     private boolean mTwoPane;
 
+    private final String TAG = "Main";
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        TLog.e(TAG,item.toString());
+        switch (item.getItemId())
+        {
+            case R.id.action_settings:
+                startActivity(new Intent(this, TSettings.class));
+                return true;
+        }
+        return false;
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -48,6 +65,9 @@ public class ItemListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        TPrefs.init(getApplicationContext());
+
         setContentView(R.layout.activity_item_list);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
