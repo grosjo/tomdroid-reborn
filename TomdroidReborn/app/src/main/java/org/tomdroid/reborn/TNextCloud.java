@@ -30,9 +30,9 @@ public class TNextCloud
 
     public TNextCloud(Activity a)
     {
-        NCKey = TPrefs.getString(TPrefs.Key.NC_KEY);
-        NCToken = TPrefs.getString(TPrefs.Key.NC_TOKEN);
-        NCTokenSecret = TPrefs.getString(TPrefs.Key.NC_TOKEN_SECRET);
+        NCKey = TPrefs.getString(TPrefs.Key.SYNC_NC_KEY);
+        NCToken = TPrefs.getString(TPrefs.Key.SYNC_NC_TOKEN);
+        NCTokenSecret = TPrefs.getString(TPrefs.Key.SYNC_NC_TOKEN_SECRET);
 
         activity = a;
     }

@@ -4,10 +4,15 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Environment;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.*;
 import androidx.preference.Preference.OnPreferenceChangeListener;
+
+import android.text.InputType;
+import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.File;
@@ -26,7 +31,7 @@ public class TSettings extends AppCompatActivity
 	private EditTextPreference color_highlight = null;
 	private SwitchPreference sync_auto = null;
 	private EditTextPreference sync_period = null;
-	private DropDownPreference sync_conflict = null;
+	private ListPreference sync_conflict = null;
 	private SwitchPreference sync_file_switch = null;
 	private EditTextPreference sync_file = null;
 	private SwitchPreference sync_nc_switch = null;
@@ -47,7 +52,8 @@ public class TSettings extends AppCompatActivity
 	//private static ProgressDialog syncProgressDialog;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.settings);
@@ -60,11 +66,26 @@ public class TSettings extends AppCompatActivity
 				.commit();
 
 		ActionBar actionBar = getSupportActionBar();
-		if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
 
 	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		int id = item.getItemId();
+
+		if (id == android.R.id.home)
+		{
+			TPrefs.commit();
+			onBackPressed();  return true;
+		}
+
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState)
+	{
 		super.onPostCreate(savedInstanceState);
 
 		// Fill the Preferences fields
@@ -77,17 +98,63 @@ public class TSettings extends AppCompatActivity
 		color_highlight = (EditTextPreference) customFragment.findPreference(TPrefs.Key.DISPLAY_COLOR_HIGHLIGHT.getName());
 		sync_auto = (SwitchPreference) customFragment.findPreference(TPrefs.Key.SYNC_AUTO.getName());
 		sync_period = (EditTextPreference) customFragment.findPreference(TPrefs.Key.SYNC_PERIOD.getName());
-		sync_conflict = (DropDownPreference) customFragment.findPreference((TPrefs.Key.SYNC_CONFLICT.getName()));
+		sync_conflict = (ListPreference) customFragment.findPreference((TPrefs.Key.SYNC_CONFLICT.getName()));
 		sync_file_switch = (SwitchPreference) customFragment.findPreference(TPrefs.Key.SYNC_SDCARD_ACTIVE.getName());
 		sync_file = (EditTextPreference) customFragment.findPreference(TPrefs.Key.SYNC_SDCARD.getName());
 		sync_nc_switch = (SwitchPreference) customFragment.findPreference(TPrefs.Key.SYNC_NC_ACTIVE.getName());
 		sync_nc = (EditTextPreference) customFragment.findPreference(TPrefs.Key.SYNC_NC_URL.getName());
 
-		// Set the default values if nothing exists
-		setDefaults();
+		display_scale.setOnBindEditTextListener(new EditTextPreference.OnBindEditTextListener() {
+			@Override
+			public void onBindEditText(@NonNull EditText editText) {
+				editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+			}
+		});
+		sync_period.setOnBindEditTextListener(new EditTextPreference.OnBindEditTextListener() {
+			@Override
+			public void onBindEditText(@NonNull EditText editText) {
+				editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+			}
+		});
+		sync_nc.setOnBindEditTextListener(new EditTextPreference.OnBindEditTextListener() {
+			@Override
+			public void onBindEditText(@NonNull EditText editText) {
+				editText.setInputType(InputType.TYPE_TEXT_VARIATION_URI | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+			}
+		});
+		sync_file.setOnBindEditTextListener(new EditTextPreference.OnBindEditTextListener() {
+			@Override
+			public void onBindEditText(@NonNull EditText editText) {
+				editText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+			}
+		});
+		color_highlight.setOnBindEditTextListener(new EditTextPreference.OnBindEditTextListener() {
+			@Override
+			public void onBindEditText(@NonNull EditText editText) {
+				editText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+			}
+		});
+		color_background.setOnBindEditTextListener(new EditTextPreference.OnBindEditTextListener() {
+			@Override
+			public void onBindEditText(@NonNull EditText editText) {
+				editText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+			}
+		});
+		color_text.setOnBindEditTextListener(new EditTextPreference.OnBindEditTextListener() {
+			@Override
+			public void onBindEditText(@NonNull EditText editText) {
+				editText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+			}
+		});
+		color_title.setOnBindEditTextListener(new EditTextPreference.OnBindEditTextListener() {
+			@Override
+			public void onBindEditText(@NonNull EditText editText) {
+				editText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+			}
+		});
+
 
 		final Activity act = this;
-
 
 		// Chance NC URK
 		sync_nc.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
@@ -95,7 +162,7 @@ public class TSettings extends AppCompatActivity
 			public boolean onPreferenceChange(Preference preference, Object locationUri) {
 
 				if (((String) locationUri).compareTo(TPrefs.getString(TPrefs.Key.SYNC_NC_URL)) != 0) {
-					TPrefs.putString(TPrefs.Key.NC_TOKEN, "");
+					TPrefs.putString(TPrefs.Key.SYNC_NC_TOKEN, "");
 				}
 				return true;
 			}
@@ -117,7 +184,7 @@ public class TSettings extends AppCompatActivity
 					if (locationUri.toString().startsWith("/")) {
 						path = new File(locationUri + "/");
 					} else {
-						path = new File(Environment.getExternalStorageDirectory()
+						path = new File(getExternalFilesDir(null)
 								+ "/" + locationUri + "/");
 					}
 
@@ -136,36 +203,47 @@ public class TSettings extends AppCompatActivity
 		});
 
 		// Chance DISPLAY SCALE
-		display_scale.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-			public boolean onPreferenceChange(Preference preference, Object locationUri) {
-				int i = 0;
-				try {
-					i = Integer.parseInt((String) locationUri);
-				} catch (Exception e) {
-					i = 0;
+		display_scale.setOnPreferenceChangeListener(new OnPreferenceChangeListener()
+		{
+			public boolean onPreferenceChange(Preference preference, Object locationUri)
+			{
+				TLog.e(TAG,"Display scale change "+locationUri.toString());
+
+				long i =0;
+				try
+				{
+					i = Long.parseLong((String) locationUri);
 				}
-				if ((i < 30) || (i > 500)) {
-					i = Integer.parseInt((String) TPrefs.Key.DISPLAY_SCALE.getDefault());
-					display_scale.setText(new Integer(i).toString());
-					TPrefs.putLong(TPrefs.Key.DISPLAY_SCALE, i);
+				catch (Exception e) {}
+
+				if ((i < 30) || (i > 500))
+				{
+					String s = (String)TPrefs.Key.DISPLAY_SCALE.getDefault();
+					display_scale.setText(s);
+					TPrefs.putString(TPrefs.Key.DISPLAY_SCALE, s);
+					return false;
 				}
 				return true;
 			}
 		});
 
 		// Chance SYNC PERIOD
-		sync_period.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-			public boolean onPreferenceChange(Preference preference, Object locationUri) {
-				int i = 0;
-				try {
-					i = Integer.parseInt((String) locationUri);
-				} catch (Exception e) {
-					i = 0;
+		sync_period.setOnPreferenceChangeListener(new OnPreferenceChangeListener()
+		{
+			public boolean onPreferenceChange(Preference preference, Object locationUri)
+			{
+				long i =0;
+				try
+				{
+					i = Long.parseLong((String) locationUri);
 				}
-				if ((i < 1) || (i > 20000)) {
-					i = Integer.parseInt((String) TPrefs.Key.SYNC_PERIOD.getDefault());
-					sync_period.setText(new Integer(i).toString());
-					TPrefs.putLong(TPrefs.Key.SYNC_PERIOD, i);
+				catch (Exception e) {}
+				if ((i < 1) || (i > 20000))
+				{
+					String s = (String)TPrefs.Key.SYNC_PERIOD.getDefault();
+					sync_period.setText(s);
+					TPrefs.putString(TPrefs.Key.SYNC_PERIOD, s);
+					return false;
 				}
 				return true;
 			}
@@ -183,65 +261,4 @@ public class TSettings extends AppCompatActivity
 	}
 	*/
 
-	private void setDefaults()
-	{
-		String s = (String) TPrefs.Key.SYNC_NC_URL.getDefault();
-		sync_nc.setDefaultValue(s);
-		if (sync_nc.getText() == null) sync_nc.setText(s);
-		sync_nc.setSummary(TPrefs.getString(TPrefs.Key.SYNC_NC_URL));
-
-		s = (String) TPrefs.Key.SYNC_SDCARD.getDefault();
-		sync_file.setDefaultValue(s);
-		if (sync_file.getText() == null) sync_file.setText(s);
-
-		int i = (Integer) TPrefs.Key.DISPLAY_SCALE.getDefault();
-		display_scale.setDefaultValue(i);
-		if (Integer.parseInt(display_scale.getText()) < 50) display_scale.setText(new Integer(i).toString());
-
-		boolean b = (Boolean) TPrefs.Key.NOTEBOOKS_MULTIPLE.getDefault();
-		allowmultiple.setDefaultValue(b);
-
-		b = (Boolean) TPrefs.Key.DISPLAY_SORT_ORDER.getDefault();
-		sorttype.setDefaultValue(b);
-
-		s = (String) TPrefs.Key.DISPLAY_COLOR_TITLE.getDefault();
-		color_title.setDefaultValue(s);
-		if (color_title.getText() == null) color_title.setText(s);
-
-		s = (String) TPrefs.Key.DISPLAY_COLOR_TEXT.getDefault();
-		color_text.setDefaultValue(s);
-		if (color_text.getText() == null) color_text.setText(s);
-
-		s = (String) TPrefs.Key.DISPLAY_COLOR_BACKGROUND.getDefault();
-		color_background.setDefaultValue(s);
-		if (color_background.getText() == null) color_background.setText(s);
-
-		s = (String) TPrefs.Key.DISPLAY_COLOR_HIGHLIGHT.getDefault();
-		color_highlight.setDefaultValue(s);
-		if (color_highlight.getText() == null) color_highlight.setText(s);
-
-		b = (Boolean) TPrefs.Key.SYNC_AUTO.getDefault();
-		sync_auto.setDefaultValue(b);
-
-		i = (Integer) TPrefs.Key.SYNC_PERIOD.getDefault();
-		sync_period.setDefaultValue(new Integer(i));
-
-		i = (Integer) TPrefs.Key.SYNC_CONFLICT.getDefault();
-		sync_conflict.setDefaultValue(new Integer(i));
-		if ((Integer.parseInt(sync_conflict.getValue()) < 1) || (Integer.parseInt(sync_conflict.getValue()) > 4)) sync_conflict.setValue(new Integer(i).toString());
-
-		b = (Boolean) TPrefs.Key.SYNC_SDCARD_ACTIVE.getDefault();
-		sync_file_switch.setDefaultValue(b);
-
-		s = (String) TPrefs.Key.SYNC_SDCARD.getDefault();
-		sync_file.setDefaultValue(s);
-		if (sync_file.getText() == null) sync_file.setText(s);
-
-		b = (Boolean) TPrefs.Key.SYNC_NC_ACTIVE.getDefault();
-		sync_nc_switch.setDefaultValue(b);
-
-		s = (String) TPrefs.Key.SYNC_NC_URL.getDefault();
-		sync_nc.setDefaultValue(s);
-		if (sync_nc.getText() == null) sync_nc.setText(s);
-	}
 }

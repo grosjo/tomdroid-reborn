@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <PreferenceCategory app:title="@string/settings_display">
 
         <EditTextPreference
             app:key="display_scale"
             app:title="@string/display_scale"
-            app:inputType="textNoSuggestions"
             app:useSimpleSummaryProvider="true" />
 
         <CheckBoxPreference
@@ -22,25 +21,21 @@
 
         <EditTextPreference
             app:key="color_title"
-            app:inputType="textNoSuggestions"
             app:title="@string/display_color_title"
             app:useSimpleSummaryProvider="true" />
 
         <EditTextPreference
             app:key="color_text"
-            app:inputType="textNoSuggestions"
             app:title="@string/display_color_text"
             app:useSimpleSummaryProvider="true" />
 
         <EditTextPreference
             app:key="color_background"
-            app:inputType="textNoSuggestions"
             app:title="@string/display_color_background"
             app:useSimpleSummaryProvider="true" />
 
         <EditTextPreference
             app:key="color_highlight"
-            app:inputType="textNoSuggestions"
             app:title="@string/display_color_highlight"
             app:useSimpleSummaryProvider="true" />
 
@@ -55,16 +50,18 @@
         <EditTextPreference
             app:dependency="sync_auto"
             app:key="sync_period"
-            app:inputType="textNoSuggestions"
             app:title="@string/sync_period"
             app:useSimpleSummaryProvider="true" />
 
-        <DropDownPreference
+        <ListPreference
             app:key="sync_conflict"
             app:title="@string/sync_conflict"
+            app:summary="@string/menu_about"
             app:entries="@array/sync_conflict_names"
-            app:entryValues="@array/sync_conflict_values" />
-        />
+            app:entryValues="@array/sync_conflict_values"
+            app:useSimpleSummaryProvider="true"
+            />
+
 
         <SwitchPreference
             app:key="sync_file_switch"
@@ -72,7 +69,6 @@
 
         <EditTextPreference
             app:dependency="sync_file_switch"
-            app:inputType="textNoSuggestions"
             app:key="sync_file"
             app:title="@string/sync_location"
             app:useSimpleSummaryProvider="true" />
@@ -84,12 +80,9 @@
 
         <EditTextPreference
             app:dependency="sync_nc_switch"
-            app:inputType="textNoSuggestions"
             app:key="sync_nc"
             app:title="@string/sync_url"
             />
-
-
     </PreferenceCategory>
 
 </PreferenceScreen>

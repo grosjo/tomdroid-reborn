@@ -7,7 +7,7 @@
     /* SETTINGS */
 
     <string name="settings_display">Display settings</string>
-    <string name="display_scale">Font scaling (%)</string>
+    <string name="display_scale">Font scaling (30% to 500%)</string>
     <string name="display_color_title">Title color</string>
     <string name="display_color_text">Text color</string>
     <string name="display_color_highlight">Highlight color</string>
